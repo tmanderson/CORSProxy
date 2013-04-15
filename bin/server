@@ -1,0 +1,54 @@
+#!/usr/bin/env node
+var http    = require('http'),
+    https   = require('https'),
+    qs      = require('querystring'),
+    port    = 8080,
+    url     = 'http://localhost:' + port + '/';
+
+if(process.env.SUBDOMAIN) url = 'http://' + process.env.SUBDOMAIN + '.jit.su/';
+
+http.createServer(function (req, res) {
+    var protocols   = {https: https, http: http},
+        params      = merge(qs.parse(req.url.split('?').pop()), { method: 'GET', protocol: 'http', headers: {} }),
+        options     = {
+            host    : params.host,
+            path    : params.path + (/GET/.test(params.method) && params.data ? '?' + qs.stringify(escape(params.data)) : ''),
+            method  : params.method,
+            headers : params.headers
+        };
+
+    var request = protocols[params.protocol].request(options, function(apiRes) {
+            apiRes.on('data', function(chunks) {
+                res.write(chunks.toString());
+            });
+
+            apiRes.on('end', function() {
+                res.end();
+            });
+
+        });
+
+    request.end();
+
+    request.on('error', function(e) {
+        console.log(+new Date() + ' \033[1;31m[ERROR] -\033[0m ' + e.message);
+        res.writeHead(400, e.message);
+        res.write('There was an error.');
+        res.end();
+    });
+
+    res.writeHead(200, {
+        'Access-Control-Allow-Origin'   : '*',
+        'Access-Control-Allow-Method'   : '*'
+    });
+    
+}).listen(port);
+
+function merge(to, from) {
+    for(var p in from) {
+        if(to[p]) continue;
+        if(!to.hasOwnProperty(p)) to[p] = from[p];
+    }
+    return to;
+}
+console.log('The http server has started at: ' + url);

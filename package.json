@@ -1,0 +1,40 @@
+{
+  "name": "CORSProxy",
+  "version": "0.0.2",
+  "author": {
+    "name": "Mitch Anderson",
+    "email": "mitch@iammitch.com"
+  },
+  "description": "A CORS proxy to handle aged APIs that have not (or refuse to) offer cors.",
+  "main": "",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tmanderson/CORSProxy.git"
+  },
+  "keywords": [
+    "CORS",
+    "proxy",
+    "cors proxy",
+    "client-side",
+    "helper"
+  ],
+  "homepage": "http://github.com/tmanderson/CORSProxy.git",
+  "scripts": {
+    "start": "node ./bin/server"
+  },
+  "contributors": [],
+  "dependencies": {},
+  "devDependencies": {},
+  "engines": {
+    "node": ">=0.4"
+  },
+  "bugs": {
+    "url": "https://github.com/tmanderson/CORSProxy/issues"
+  },
+  "licenses": [],
+  "analyze": false,
+  "readme": "",
+  "readmeFilename": "ReadMe.md",
+  "dist": {},
+  "subdomain": "corsproxy"
+}
